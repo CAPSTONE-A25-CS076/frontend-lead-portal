@@ -6,6 +6,18 @@ export default function LeadFilters({ value, onChange }) {
 
   const update = (key, val) => onChange({ ...value, [key]: val });
 
+  const clearFilters = () => {
+    onChange({
+      minScore: 0,
+      job: "",
+      marital: "",
+      housing: "",
+      loan: "",
+      month: "",
+      q: "",
+    });
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow p-4 md:p-6 space-y-4">
       {/* Search Bar & Toggle Button */}
@@ -93,15 +105,7 @@ export default function LeadFilters({ value, onChange }) {
 
           {/* Clear Filters Button */}
           <button
-            onClick={() => onChange({
-              minScore: 60,
-              job: "",
-              marital: "",
-              housing: "",
-              loan: "",
-              month: "",
-              q: "",
-            })}
+            onClick={clearFilters}
             className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-colors"
           >
             Clear All

@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 
-export function useLeadFilters(leads, filters) {
+export function useLeadFilters(leads, filters, limit = null) {
   return useMemo(
-    () =>
-      leads
+    () => {
+      let filtered = leads
         .filter((r) => Math.round(r.score * 100) >= filters.minScore)
         .filter((r) => !filters.job || r.job === filters.job)
         .filter((r) => !filters.marital || r.marital === filters.marital)
@@ -17,7 +17,14 @@ export function useLeadFilters(leads, filters) {
             String(v).toLowerCase().includes(q)
           );
         })
-        .sort((a, b) => b.score - a.score),
-    [leads, filters]
+        .sort((a, b) => b.score - a.score);
+
+      if (limit) {
+        filtered = filtered.slice(0, limit);
+      }
+
+      return filtered;
+    },
+    [leads, filters, limit]
   );
 }

@@ -9,7 +9,7 @@ import { useLeadFilters } from "../hooks/useLeadFilters";
 
 export default function Dashboard() {
   const [filters, setFilters] = useState({
-    minScore: 60,
+    minScore: 0,
     job: "",
     marital: "",
     housing: "",
@@ -25,6 +25,12 @@ export default function Dashboard() {
   const TOP_COUNT = 10;
   const filteredLeads = useLeadFilters(leads, filters, showTopOnly ? TOP_COUNT : null);
   const totalFilteredCount = useLeadFilters(leads, filters, null).length;
+
+  // Handle filter change and reset to top 10
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+    setShowTopOnly(true); // Always show top 10 when filters change
+  };
 
   if (loading) {
     return (
@@ -52,7 +58,7 @@ export default function Dashboard() {
     <div className="space-y-4 md:space-y-6">
       <DashboardHeader showTopOnly={showTopOnly} onToggleTop={setShowTopOnly} />
       
-      <LeadFilters value={filters} onChange={setFilters} />
+      <LeadFilters value={filters} onChange={handleFilterChange} />
       
       {/* Results Count */}
       <div className="flex items-center justify-between px-1">
