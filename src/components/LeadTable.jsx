@@ -1,50 +1,54 @@
-import { Link } from "react-router-dom";
-import ScoreBadge from "./ScoreBadge.jsx";
+import LeadTableHeader from "./LeadTableHeader";
+import LeadTableRow from "./LeadTableRow";
+import LeadCard from "./LeadCard";
 
-export default function LeadTable({ rows }) {
+export default function LeadTable({ leads, onLeadSelect }) {
   return (
-    <div className="bg-white rounded-2xl shadow overflow-hidden">
-      <table className="min-w-full">
-        <thead className="bg-gray-100 text-left text-sm">
-          <tr>
-            <th className="px-4 py-3">Rank</th>
-            <th className="px-4 py-3">Score</th>
-            <th className="px-4 py-3">Age</th>
-            <th className="px-4 py-3">Job</th>
-            <th className="px-4 py-3">Marital</th>
-            <th className="px-4 py-3">Education</th>
-            <th className="px-4 py-3">Housing</th>
-            <th className="px-4 py-3">Loan</th>
-            <th className="px-4 py-3">Prev Outcome</th>
-            <th className="px-4 py-3">Action</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {rows.map((r, idx) => (
-            <tr key={r.id} className="hover:bg-gray-50">
-              <td className="px-4 py-3">{idx + 1}</td>
-              <td className="px-4 py-3">
-                <ScoreBadge score={r.score} />
-              </td>
-              <td className="px-4 py-3">{r.age}</td>
-              <td className="px-4 py-3">{r.job}</td>
-              <td className="px-4 py-3">{r.marital}</td>
-              <td className="px-4 py-3">{r.education}</td>
-              <td className="px-4 py-3">{r.housing}</td>
-              <td className="px-4 py-3">{r.loan}</td>
-              <td className="px-4 py-3">{r.poutcome}</td>
-              <td className="px-4 py-3">
-                <Link
-                  to={`/leads/${r.id}`}
-                  className="text-sm font-medium text-indigo-700 hover:underline"
-                >
-                  Detail
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <>
+      {/* Desktop View - Table */}
+      <div className="hidden md:block bg-white rounded-2xl shadow overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full">
+            <LeadTableHeader />
+            <tbody className="divide-y">
+              {leads.length === 0 ? (
+                <tr>
+                  <td colSpan="10" className="px-4 py-8 text-center text-gray-500">
+                    No leads found
+                  </td>
+                </tr>
+              ) : (
+                leads.map((lead, idx) => (
+                  <LeadTableRow
+                    key={lead.id}
+                    lead={lead}
+                    index={idx}
+                    onOpen={onLeadSelect}
+                  />
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Mobile View - Cards */}
+      <div className="md:hidden space-y-3">
+        {leads.length === 0 ? (
+          <div className="bg-white rounded-xl p-8 text-center text-gray-500">
+            No leads found
+          </div>
+        ) : (
+          leads.map((lead, idx) => (
+            <LeadCard
+              key={lead.id}
+              lead={lead}
+              index={idx}
+              onOpen={onLeadSelect}
+            />
+          ))
+        )}
+      </div>
+    </>
   );
 }
