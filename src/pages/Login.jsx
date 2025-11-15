@@ -1,44 +1,29 @@
 import { useState } from "react";
+import LoginHeader from "../components/LoginHeader";
+import LoginForm from "../components/LoginForm";
 
-export default function Login({ onLogin }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function LoginPage({ onLogin }) {
+  const [isLoading, setIsLoading] = useState(false);
 
-  const submit = (e) => {
-    e.preventDefault();
-    onLogin?.(); // mock auth
+  const handleLogin = async (credentials) => {
+    setIsLoading(true);
+    
+    // Simulasi delay loading
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    setIsLoading(false);
+    onLogin?.(credentials);
   };
 
   return (
-    <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-semibold mb-4">Login (Simulasi)</h1>
-      <form
-        onSubmit={submit}
-        className="space-y-4 bg-white p-6 rounded-2xl shadow"
-      >
-        <div>
-          <label className="block text-sm font-medium mb-1">Email</label>
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            className="w-full rounded-lg border-gray-300"
-            placeholder="you@bank.co.id"
-          />
+    <div className=" flex justify-center p-4">
+      <div className="w-full max-w-md">
+        <LoginHeader />
+
+        <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+          <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
         </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Password</label>
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            className="w-full rounded-lg border-gray-300"
-          />
-        </div>
-        <button className="w-full py-2 rounded-xl bg-black text-white font-medium">
-          Masuk
-        </button>
-      </form>
+      </div>
     </div>
   );
 }
