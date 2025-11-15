@@ -73,12 +73,6 @@ export default function LoginForm({ onSubmit, isLoading }) {
           />
           <span className="ml-2 text-gray-600">Ingat saya</span>
         </label>
-        <button
-          type="button"
-          className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
-        >
-          Lupa password?
-        </button>
       </div>
 
       {/* Submit Button */}
