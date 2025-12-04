@@ -7,4 +7,13 @@ export default defineConfig({
   css: {
     postcss: "./postcss.config.js",
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://capstone-asah-production.up.railway.app',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 });

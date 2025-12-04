@@ -1,11 +1,26 @@
-import { Routes, Route, Navigate, Link } from "react-router-dom";
+import { Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import LeadDetail from "./pages/LeadDetail.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function App() {
-  const [authed, setAuthed] = useState(false);
+  const [authed, setAuthed] = useState(() => {
+    const token = localStorage.getItem('token');
+    return !!token;
+  });
+  const navigate = useNavigate();
+
+  const handleLogin = (user) => {
+    setAuthed(true);
+    navigate('/dashboard');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setAuthed(false);
+    navigate('/login');
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -25,7 +40,7 @@ export default function App() {
                 </Link>
                 <button
                   className="text-sm text-gray-600 hover:text-black"
-                  onClick={() => setAuthed(false)}
+                  onClick={handleLogout}
                 >
                   Logout
                 </button>
@@ -50,7 +65,7 @@ export default function App() {
           />
           <Route
             path="/login"
-            element={<Login onLogin={() => setAuthed(true)} />}
+            element={<Login onLogin={handleLogin} />}
           />
           <Route
             path="/dashboard"

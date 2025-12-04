@@ -2,33 +2,34 @@ import { useState } from "react";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 
 export default function LoginForm({ onSubmit, isLoading }) {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ email, password });
+    onSubmit({ username, password });
   };
 
   return (
-    <div className="space-y-6">
-      {/* Email Input */}
+    <form>
+      <div className="space-y-6">
+      {/* Username Input */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Email
+          Username
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <Mail className="w-5 h-5 text-gray-400" />
           </div>
           <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            type="text"
             required
             className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none"
-            placeholder="you@bank.co.id"
+            placeholder="your username"
           />
         </div>
       </div>
@@ -91,5 +92,6 @@ export default function LoginForm({ onSubmit, isLoading }) {
         )}
       </button>
     </div>
+    </form>
   );
 }
