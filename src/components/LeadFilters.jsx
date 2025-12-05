@@ -72,7 +72,7 @@ export default function LeadFilters({ value, onChange }) {
             label="Job"
             value={value.job}
             onChange={(val) => update("job", val)}
-            options={["admin", "technician", "services", "management", "retired", "blue-collar", "unemployed", "entrepreneur", "housemaid", "self-employed", "student"]}
+            options={["admin.", "technician", "services", "management", "retired", "blue-collar", "unemployed", "entrepreneur", "housemaid", "self-employed", "student"]}
           />
           
           <FilterSelect
