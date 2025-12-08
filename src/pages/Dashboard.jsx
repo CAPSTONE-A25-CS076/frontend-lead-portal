@@ -14,7 +14,8 @@ export default function Dashboard() {
     marital: "",
     housing: "",
     loan: "",
-    month: "",
+    monthFrom: "",
+    monthTo: "",
     q: "",
   });
   const [selected, setSelected] = useState(null);

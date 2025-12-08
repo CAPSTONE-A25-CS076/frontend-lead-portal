@@ -1,6 +1,21 @@
 import { Search, Filter } from "lucide-react";
 import { useState } from "react";
 
+const MONTHS = [
+  { value: "jan", label: "January", index: 1 },
+  { value: "feb", label: "February", index: 2 },
+  { value: "mar", label: "March", index: 3 },
+  { value: "apr", label: "April", index: 4 },
+  { value: "may", label: "May", index: 5 },
+  { value: "jun", label: "June", index: 6 },
+  { value: "jul", label: "July", index: 7 },
+  { value: "aug", label: "August", index: 8 },
+  { value: "sep", label: "September", index: 9 },
+  { value: "oct", label: "October", index: 10 },
+  { value: "nov", label: "November", index: 11 },
+  { value: "dec", label: "December", index: 12 },
+];
+
 export default function LeadFilters({ value, onChange }) {
   const [showFilters, setShowFilters] = useState(false);
 
@@ -13,7 +28,8 @@ export default function LeadFilters({ value, onChange }) {
       marital: "",
       housing: "",
       loan: "",
-      month: "",
+      monthFrom: "",
+      monthTo: "",
       q: "",
     });
   };
@@ -46,25 +62,27 @@ export default function LeadFilters({ value, onChange }) {
 
       {/* Filters Grid */}
       <div className={`${showFilters ? 'block' : 'hidden'} md:block space-y-4`}>
-        {/* Score Slider */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Min Score: {value.minScore}%
-          </label>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={value.minScore}
-            onChange={(e) => update("minScore", Number(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-          />
-          <div className="flex justify-between text-xs text-gray-500 mt-1">
-            <span>0%</span>
-            <span>50%</span>
-            <span>100%</span>
+        {/* Score Slider - Optional */}
+        {value.minScore > 0 && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Min Score: {value.minScore}%
+            </label>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={value.minScore}
+              onChange={(e) => update("minScore", Number(e.target.value))}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+            />
+            <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <span>0%</span>
+              <span>50%</span>
+              <span>100%</span>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Filter Dropdowns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
@@ -96,11 +114,13 @@ export default function LeadFilters({ value, onChange }) {
             options={["yes", "no"]}
           />
           
-          <FilterSelect
-            label="Month"
-            value={value.month}
-            onChange={(val) => update("month", val)}
-            options={["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]}
+          {/* Month Range - Combined */}
+          <MonthRangeSelect
+            label="Month Range"
+            monthFrom={value.monthFrom}
+            monthTo={value.monthTo}
+            onChangeFrom={(val) => update("monthFrom", val)}
+            onChangeTo={(val) => update("monthTo", val)}
           />
 
           {/* Clear Filters Button */}
@@ -111,6 +131,18 @@ export default function LeadFilters({ value, onChange }) {
             Clear All
           </button>
         </div>
+
+        {/* Month Range Display */}
+        {(value.monthFrom || value.monthTo) && (
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-gray-600">Month range:</span>
+            <span className="font-medium text-indigo-600">
+              {value.monthFrom ? MONTHS.find(m => m.value === value.monthFrom)?.label : "All"}
+              {" → "}
+              {value.monthTo ? MONTHS.find(m => m.value === value.monthTo)?.label : "All"}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -134,6 +166,65 @@ function FilterSelect({ label, value, onChange, options }) {
           </option>
         ))}
       </select>
+    </div>
+  );
+}
+
+function MonthSelect({ label, value, onChange }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        {label}
+      </label>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all bg-white"
+      >
+        <option value="">All</option>
+        {MONTHS.map((month) => (
+          <option key={month.value} value={month.value}>
+            {month.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function MonthRangeSelect({ label, monthFrom, monthTo, onChangeFrom, onChangeTo }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        {label}
+      </label>
+      <div className="flex items-center gap-2">
+        <select
+          value={monthFrom}
+          onChange={(e) => onChangeFrom(e.target.value)}
+          className="flex-1 px-3 py-2 rounded-xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all bg-white text-sm"
+        >
+          <option value="">From</option>
+          {MONTHS.map((month) => (
+            <option key={month.value} value={month.value}>
+              {month.label.slice(0, 3)}
+            </option>
+          ))}
+        </select>
+        <span className="text-gray-400 font-medium">→</span>
+        <select
+          value={monthTo}
+          onChange={(e) => onChangeTo(e.target.value)}
+          className="flex-1 px-3 py-2 rounded-xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all bg-white text-sm"
+        >
+          <option value="">To</option>
+          {MONTHS.map((month) => (
+            <option key={month.value} value={month.value}>
+              {month.label.slice(0, 3)}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }
