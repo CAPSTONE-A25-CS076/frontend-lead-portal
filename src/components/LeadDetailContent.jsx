@@ -17,7 +17,7 @@ export default function LeadDetailContent({ lead }) {
         <DetailField label="Marital" value={lead.marital} />
         <DetailField label="Education" value={lead.education} />
         <DetailField label="Default" value={lead.default} />
-        <DetailField label="Balance (€)" value={lead.balance} />
+        {/* <DetailField label="Balance (€)" value={lead.balance} /> */}
         <DetailField label="Housing" value={lead.housing} />
         <DetailField label="Loan" value={lead.loan} />
         <DetailField label="Contact" value={lead.contact} />
