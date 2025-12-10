@@ -32,9 +32,9 @@ export default function LeadDetailContent({ lead }) {
       </div>
 
       {/* Action Button */}
-      <button className="w-full py-2 rounded-xl bg-black text-white font-medium hover:bg-gray-800 transition-colors">
+      {/* <button className="w-full py-2 rounded-xl bg-black text-white font-medium hover:bg-gray-800 transition-colors">
         Call Lead
-      </button>
+      </button> */}
     </div>
   );
 }
