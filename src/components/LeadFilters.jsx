@@ -63,7 +63,7 @@ export default function LeadFilters({ value, onChange }) {
       {/* Filters Grid */}
       <div className={`${showFilters ? 'block' : 'hidden'} md:block space-y-4`}>
         {/* Score Slider - Optional */}
-        {value.minScore > 0 && (
+        {/* {value.minScore > 0 && ( */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Min Score: {value.minScore}%
@@ -82,7 +82,7 @@ export default function LeadFilters({ value, onChange }) {
               <span>100%</span>
             </div>
           </div>
-        )}
+        {/* )} */}
 
         {/* Filter Dropdowns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
